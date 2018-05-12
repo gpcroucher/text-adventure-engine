@@ -10,6 +10,11 @@ namespace text_adventure_engine
     {
         static void Main(string[] args)
         {
+            // read csv file of commands into a list of Commands
+            // parser.AddCommand(command)
+
+            Parser parser = new text_adventure_engine.Parser();
+            
         }
     }
 }
