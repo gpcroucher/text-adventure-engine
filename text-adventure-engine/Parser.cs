@@ -11,6 +11,17 @@ namespace text_adventure_engine
         public List<Command> CommandList;
         public Command CurrentCommand;
         
+        public void AddCommand (string name, string args)
+        {
+            if (!Int32.TryParse(args, out int x))
+            {
+                return;
+            }
+            else
+            {
+                AddCommand(name, x);
+            }
+        }
         public void AddCommand (string name, int args)
         {
             CommandList.Add(new Command(name, args));
