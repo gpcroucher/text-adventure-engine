@@ -29,6 +29,10 @@ namespace text_adventure_engine
             // parser.AddCommand(command)
             */
 
+            Room testroom = new text_adventure_engine.Room();
+            Console.WriteLine(testroom.briefDescription);
+            Console.Read();
+
         }
     }
 }
