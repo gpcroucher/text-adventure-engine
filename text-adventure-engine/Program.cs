@@ -13,7 +13,8 @@ namespace text_adventure_engine
         {
             Parser parser = new text_adventure_engine.Parser();
 
-            StreamReader file = new StreamReader("/commands.txt");
+            /*
+            StreamReader file = new StreamReader("./commands.txt");
             string[] currentLine;
             while (!file.EndOfStream)
             {
@@ -21,12 +22,13 @@ namespace text_adventure_engine
                 parser.AddCommand(currentLine[0],  currentLine[1]);
             }
 
+            string[] lines = System.IO.File.ReadAllLines(@"C:\Users\Public\TestFolder\WriteLines2.txt");
+
 
             // read csv file of commands into a list of Commands
             // parser.AddCommand(command)
+            */
 
-            
-            
         }
     }
 }

@@ -10,10 +10,11 @@ namespace text_adventure_engine
     {
         public List<Command> CommandList;
         public Command CurrentCommand;
-        
+        /*
         public void AddCommand (string name, string args)
         {
-            if (!Int32.TryParse(args, out int x))
+            int x;
+            if (!Int32.TryParse(args, out x))
             {
                 return;
             }
@@ -30,6 +31,7 @@ namespace text_adventure_engine
         {
             CommandList.Add(command);
         }
+        */
 
         /*
         verbdict = [
