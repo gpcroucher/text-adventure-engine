@@ -48,6 +48,34 @@ namespace text_adventure_engine
             isOpen = true;
         }
 
+        public void PutIn(Thing thing)
+        {
+            if (isOpen && !containerLock.IsLocked)
+            {
+                contents.Insert(thing);
+            }
+        }
+
+        public Thing TakeFrom(string thingName)
+        {
+            if (isOpen && !containerLock.IsLocked)
+            {
+                Thing thingTaken = contents.GetThingReference(thingName);
+                contents.Take(thingName);
+                return thingTaken;
+            }
+            else return null;
+        }
+        public Thing TakeFrom(Thing thing)
+        {
+            if (isOpen && !containerLock.IsLocked)
+            {
+                contents.Take(thing.name);
+                return thing;
+            }
+            else return null;
+        }
+
         public bool Unlock(Thing key)
         {
             return containerLock.UnlockWithKey(key);

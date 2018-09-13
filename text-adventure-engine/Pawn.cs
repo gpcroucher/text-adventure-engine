@@ -8,7 +8,9 @@ namespace text_adventure_engine
 {
     class Pawn
     {
-        private Inventory personalInventory;
+        public static Pawn playerPawn;
+
+        public Inventory personalInventory;
 
 
     }

@@ -18,6 +18,13 @@ namespace text_adventure_engine
         }
 
         private bool isLocked = false;
+        public bool IsLocked
+        {
+            get
+            {
+                return isLocked;
+            }
+        }
         
 
         public Lock(string inputName, Thing newKey = null, bool newIsLocked = false) : base(inputName)
