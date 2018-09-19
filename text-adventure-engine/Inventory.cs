@@ -10,7 +10,26 @@ namespace text_adventure_engine
     {
         private Dictionary<string, Thing> invContents = new Dictionary<string, Thing>();
 
-        public Container GetContainerReference(string containerName)
+        /// <summary>
+        /// Returns true if the item passed exists in the inventory.
+        /// </summary>
+        /// <param name="thingName">The name of the item to check for.</param>
+        /// <returns>True if the item is present, false otherwise.</returns>
+        public bool Contains (string thingName)
+        {
+            return invContents.ContainsKey(thingName);
+        }
+        /// <summary>
+        /// Returns true if the item passed exists in the inventory.
+        /// </summary>
+        /// <param name="thingReference">The item to check for, by reference.</param>
+        /// <returns>True if the item is present, false otherwise.</returns>
+        public bool Contains (Thing thingReference)
+        {
+            return invContents.ContainsValue(thingReference);
+        }
+
+        public Container GetContainerReference (string containerName)
         {
             if (invContents.ContainsKey(containerName) && invContents[containerName].GetType() == typeof(Container))
             {
