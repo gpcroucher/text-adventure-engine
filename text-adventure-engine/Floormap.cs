@@ -60,7 +60,7 @@ namespace text_adventure_engine
             }
 
             static MapElement RoomMapElement = new MapElement(1, 5, "|@@@|");
-            static MapElement HorConnectorMapElement = new MapElement(1, 1, "-");
+            static MapElement HorConnectorMapElement = new MapElement(1, 2, "--");
             static MapElement VerConnectorMapElement = new MapElement(1, 1, "|");
             static MapElement LeftDiagConnectorMapElement = new MapElement(1, 1, @"\");
             static MapElement RightDiagConnectorMapElement = new MapElement(1, 1, "/");

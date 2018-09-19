@@ -26,14 +26,25 @@ namespace text_adventure_engine
             name = Name;
         }
 
+        /// <summary>
+        /// Remove an object from pawn's inventory and add it to the room contents.
+        /// </summary>
+        /// <param name="thing">The object to be dropped, passed by reference.</param>
+        /// <returns>A reference to the object dropped.</returns>
         public Thing Drop (Thing thing)
         {
-            // remove the thing from pawn inventory and add it to room contents
             location.contents.Insert(personalInventory.Remove(thing));
             thing.location = location;
             return thing;
         }
 
+        /// <summary>
+        /// Attempt to move the pawn in a specified direction. 
+        /// Checks the direction exists, there is a door in that direction, the door is unlocked, 
+        /// then moves the player to the room on the other side of the door.
+        /// </summary>
+        /// <param name="direction">The name of the direction to attempt movement in, as a string.</param>
+        /// <returns>A string detailing either failure or success.</returns>
         public string Go (string direction)
         {
             if (!Room.Directions.Contains(direction))
@@ -63,11 +74,11 @@ namespace text_adventure_engine
         
         public void TakeFrom(string thingName, string containerName)
         {
-            personalInventory.Insert(location.contents.GetContainerReference(containerName).contents.Remove(thingName));
+            personalInventory.Insert(location.contents.GetContainerReference(containerName).Contents.Remove(thingName));
         }
         public void TakeFrom(Thing thingReference, Container containerReference)
         {
-            personalInventory.Insert(containerReference.contents.Remove(thingReference));
+            personalInventory.Insert(containerReference.Contents.Remove(thingReference));
         }
         
     }

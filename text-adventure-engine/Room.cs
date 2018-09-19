@@ -8,7 +8,7 @@ namespace text_adventure_engine
 {
     class Room
     {
-        private static List<string> directions = new List<string> { "north", "east", "south", "west" };
+        private static List<string> directions = new List<string> { "north", "east", "south", "west", "up", "down" };
         public static List<string> Directions
         {
             get
@@ -21,7 +21,9 @@ namespace text_adventure_engine
             { "north", "south" },
             { "east", "west" },
             { "south", "north" },
-            { "west", "east" }
+            { "west", "east" },
+            { "up", "down" },
+            { "down", "up" }
         };
         public static Dictionary<string, string> Opposites
         {
@@ -48,9 +50,16 @@ namespace text_adventure_engine
                 return name;
             }
         }
+        // A dictionary mapping directions to doors (by reference).
         public Dictionary<string, Door> exits = new Dictionary<string, Door>();
+
+        // An inventory to track the items in the room.
         public Inventory contents = new Inventory();
+
+        // A description shown upon entering for the first time.
         public string verboseDescription;
+
+        // A description shown upon entry each time.
         public string briefDescription;
 
         public Room (string setName)
