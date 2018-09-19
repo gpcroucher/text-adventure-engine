@@ -8,11 +8,17 @@ namespace text_adventure_engine
 {
     class Container : Thing
     {
-        public Inventory contents;
+        public Inventory contents = new Inventory();
         public Lock containerLock;
 
-        public new bool isMoveable = false;
-        public bool isOpen = false;
+        protected bool isOpen;
+        public bool IsOpen
+        {
+            get
+            {
+                return IsOpen;
+            }
+        }
 
         public Container(string inputName, bool newIsMoveable, bool newIsOpen) : base(inputName)
         {
@@ -55,13 +61,13 @@ namespace text_adventure_engine
                 contents.Insert(thing);
             }
         }
-
+        /*
         public Thing TakeFrom(string thingName)
         {
             if (isOpen && !containerLock.IsLocked)
             {
                 Thing thingTaken = contents.GetThingReference(thingName);
-                contents.Take(thingName);
+                Pawn.playerPawn.Take(thingName);
                 return thingTaken;
             }
             else return null;
@@ -75,7 +81,7 @@ namespace text_adventure_engine
             }
             else return null;
         }
-
+        */
         public bool Unlock(Thing key)
         {
             return containerLock.UnlockWithKey(key);

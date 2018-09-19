@@ -8,29 +8,39 @@ namespace text_adventure_engine
 {
     class Inventory
     {
-        private Dictionary<string, Thing> invContents;
+        private Dictionary<string, Thing> invContents = new Dictionary<string, Thing>();
+
+        public Container GetContainerReference(string containerName)
+        {
+            if (invContents.ContainsKey(containerName) && invContents[containerName].GetType() == typeof(Container))
+            {
+                return (Container)invContents[containerName];
+            }
+            else return null;
+        }
 
         public Thing GetThingReference (string thingName)
         {
-            return invContents[thingName];
+            if (invContents.ContainsKey(thingName))
+            {
+                return invContents[thingName];
+            }
+            else return null;
         }
 
-        public void Insert (Thing insertee)
+        public Thing Insert (Thing insertee)
         {
             invContents.Add(insertee.name, insertee);
+            return insertee;
+        }
+        public Container Insert (Container insertee)
+        {
+            invContents.Add(insertee.name, insertee);
+            return insertee;
         }
         public void Insert (string alternateName, Thing insertee)
         {
             invContents.Add(alternateName, insertee);
-        }
-
-        public void Take (string thingName)
-        {
-            Pawn.playerPawn.personalInventory.Insert(Remove(thingName));
-        }
-        public void Take(Thing thingReference)
-        {
-            Pawn.playerPawn.personalInventory.Insert(Remove(thingReference));
         }
 
         public Thing Remove (string thingName)

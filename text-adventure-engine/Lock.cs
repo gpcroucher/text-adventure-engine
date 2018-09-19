@@ -8,7 +8,7 @@ namespace text_adventure_engine
 {
     class Lock : Thing
     {
-        private Thing matchingKey;
+        protected Thing matchingKey;
         public Thing Key
         {
             get
@@ -17,7 +17,7 @@ namespace text_adventure_engine
             }
         }
 
-        private bool isLocked = false;
+        protected bool isLocked = false;
         public bool IsLocked
         {
             get
