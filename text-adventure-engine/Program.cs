@@ -19,6 +19,11 @@ namespace text_adventure_engine
             var report1 = new Command("report", 1, "Report");
             parser.AddCommand(report1);
 
+            parser.AddCommand(new Command("report", 2, "Report"));
+
+            parser.AddCommand(new Command("go", 1, "Go"));
+            parser.AddCommand(new Command("look", 0, "Look"));
+
             // Define commands here and add to parser.commandList.
 
             /*
@@ -53,15 +58,7 @@ namespace text_adventure_engine
 
             new Door(testroom, westroom, "west");
 
-            Console.WriteLine(testroom.briefDescription);
-            Console.WriteLine(testroom.verboseDescription);
-            Console.ReadLine();
-
-            Pawn.playerPawn.Go("west");
-            Console.WriteLine(Pawn.playerPawn.location.verboseDescription);
-            Console.WriteLine(Pawn.playerPawn.location.briefDescription);
-            Console.WriteLine(Pawn.playerPawn.location);
-            Console.ReadLine();
+            Pawn.playerPawn.Look();
 
             parser.GetInput();
 

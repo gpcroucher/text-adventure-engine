@@ -60,7 +60,14 @@ namespace text_adventure_engine
                 return "The door is locked.";
             }
             location = location.exits[direction].OtherSide(location);
+            Look();
             return $"You go {direction}.";
+        }
+
+        public string Look()
+        {
+            Console.WriteLine(location.verboseDescription);
+            return location.verboseDescription;
         }
 
         public void Report()
