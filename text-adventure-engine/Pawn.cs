@@ -63,6 +63,19 @@ namespace text_adventure_engine
             return $"You go {direction}.";
         }
 
+        public void Report()
+        {
+            Console.WriteLine("report - 0 args");
+        }
+        public void Report(string arg1)
+        {
+            Console.WriteLine("report - 1 arg");
+        }
+        public void Report(string arg1, string arg2)
+        {
+            Console.WriteLine("report - 2 args");
+        }
+
         public void Take(string thingName)
         {
             personalInventory.Insert(location.contents.Remove(thingName));
