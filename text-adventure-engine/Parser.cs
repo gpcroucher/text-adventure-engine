@@ -85,6 +85,7 @@ namespace text_adventure_engine
             GetInput();
         }
 
+        // TODO: add support for manipulating multiple objects, eg "drop clock, box, spoon"
         public string ParseInput (string inputText)
         {
             List<string> inputList = inputText.Split(' ').ToList();

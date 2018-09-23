@@ -26,7 +26,6 @@ namespace text_adventure_engine
             }
         }
         
-
         public Lock(string inputName, Thing newKey = null, bool newIsLocked = false) : base(inputName)
         {
             matchingKey = newKey;
@@ -37,9 +36,14 @@ namespace text_adventure_engine
         {
             if (matchingKey == null)
             {
-                matchingKey = new Thing($"key to {name}");
+                matchingKey = new Thing($"key to {Name}");
             }
             return matchingKey;
+        }
+
+        public static Lock EmptyLock()
+        {
+            return new Lock("lock", null, false);
         }
 
         public void ForceLock()

@@ -24,26 +24,8 @@ namespace text_adventure_engine
             parser.AddCommand(new Command("go", 1, "Go"));
             parser.AddCommand(new Command("look", 0, "Look"));
 
-            // Define commands here and add to parser.commandList.
-
-            /*
-            StreamReader file = new StreamReader("./commands.txt");
-            string[] currentLine;
-            while (!file.EndOfStream)
-            {
-                currentLine = file.ReadLine().Split(',');
-                parser.AddCommand(currentLine[0],  currentLine[1]);
-            }
-
-            string[] lines = System.IO.File.ReadAllLines(@"C:\Users\Public\TestFolder\WriteLines2.txt");
-
-
-            // read csv file of commands into a list of Commands
-            // parser.AddCommand(command)
-            */
-
             Pawn.playerPawn = new Pawn("player");
-            Pawn.playerPawn.personalInventory.Insert(new Container("box", false, false));
+            Pawn.playerPawn.AddToInventory(new Container("box", false, false));
 
             Floormap level = new Floormap();
 
@@ -51,16 +33,17 @@ namespace text_adventure_engine
             Container box = testroom.contents.Insert(new Container("box", false, false));
             box.PutIn(new Thing("ball"));
 
-            Pawn.playerPawn.location = testroom;
+            Pawn.playerPawn.Move(testroom);
 
             Room westroom = level.AddRoom(new Room("westroom"));
             westroom.verboseDescription = "west room reached";
 
-            new Door(testroom, westroom, "west");
+            new Door("west door", testroom, westroom, "west");
 
             Pawn.playerPawn.Look();
 
             parser.GetInput();
+
 
             Console.ReadLine();
         }

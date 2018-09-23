@@ -6,17 +6,10 @@ using System.Threading.Tasks;
 
 namespace text_adventure_engine
 {
-    class Container : Thing
+    class Container : Thing, IHasInventory, ILockable
     {
-        private Inventory contents;
-        public Inventory Contents
-        {
-            get
-            {
-                return contents;
-            }
-        }
-        public Lock containerLock;
+        public Inventory Contents { get; }
+        public Lock AttachedLock { get; private set; }
 
         protected bool isOpen;
         public bool IsOpen
@@ -29,22 +22,29 @@ namespace text_adventure_engine
 
         public Container (string inputName, bool newIsMoveable, bool newIsOpen) : base(inputName)
         {
-            isMoveable = newIsMoveable;
+            IsMovable = newIsMoveable;
             isOpen = newIsOpen;
-            contents = new Inventory();
+            Contents = new Inventory();
+            IntendedType = typeof(Container);
+            AttachedLock = text_adventure_engine.Lock.EmptyLock();
         }
 
-        public Lock AddLock (Thing key, bool isLocked, string name = "lock")
+        public Lock AddLock (Thing key = null, bool isLocked = false, string name = "lock")
         {
-            if (containerLock == null)
+            if (AttachedLock == null)
             {
-                containerLock = new Lock(name, key, isLocked);
-                return containerLock;
+                AttachedLock = new Lock(name, key, isLocked);
+                return AttachedLock;
             }
             else
             {
                 return null;
             }
+        }
+
+        public void AddToInventory<T>(T item) where T : Thing
+        {
+            Contents.Insert(item);
         }
 
         public bool Close ()
@@ -60,17 +60,25 @@ namespace text_adventure_engine
 
         public bool Contains (string thing)
         {
-            return contents.Contains(thing);
+            return Contents.Contains(thing);
         }
-        public bool Contains (Thing thing)
+        public bool Contains<T>(T item) where T : Thing
         {
-            return contents.Contains(thing);
+            return Contents.Contains(item);
         }
 
-        public bool Lock (Thing key)
+        public List<string> GetListOfContents()
         {
+            return Contents.GetListOfContents();
+        }
 
-            return containerLock.LockWithKey(key);
+        public void Lock()
+        {
+            AttachedLock.ForceLock();
+        }
+        public void Lock (Thing key)
+        {
+            AttachedLock.LockWithKey(key);
         }
 
         public bool Open ()
@@ -81,7 +89,7 @@ namespace text_adventure_engine
                 Console.WriteLine("That is already open.");
                 return false;
             }
-            else if (containerLock.IsLocked)
+            else if (AttachedLock.IsLocked)
             {
                 Console.WriteLine("That is locked.");
                 return false;
@@ -92,36 +100,34 @@ namespace text_adventure_engine
 
         public void PutIn (Thing thing)
         {
-            if (isOpen && !containerLock.IsLocked)
+            if (isOpen && !AttachedLock.IsLocked)
             {
-                contents.Insert(thing);
+                AddToInventory(thing);
             }
-        }
-        /*
-        public Thing TakeFrom(string thingName)
-        {
-            if (isOpen && !containerLock.IsLocked)
-            {
-                Thing thingTaken = contents.GetThingReference(thingName);
-                Pawn.playerPawn.Take(thingName);
-                return thingTaken;
-            }
-            else return null;
-        }
-        public Thing TakeFrom(Thing thing)
-        {
-            if (isOpen && !containerLock.IsLocked)
-            {
-                contents.Take(thing.name);
-                return thing;
-            }
-            else return null;
-        }
-        */
-        public bool Unlock(Thing key)
-        {
-            return containerLock.UnlockWithKey(key);
         }
 
+        public dynamic RemoveFromInventory(string itemName)
+        {
+            return Contents.Remove(itemName);
+        }
+        public T RemoveFromInventory<T>(T item) where T : Thing
+        {
+            return Contents.Remove(item);
+        }
+
+        public void Unlock()
+        {
+            AttachedLock.ForceUnlock();
+        }
+        public void Unlock(Thing key)
+        {
+            AttachedLock.UnlockWithKey(key);
+        }
+
+        
+
+        
+
+        
     }
 }

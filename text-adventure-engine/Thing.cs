@@ -6,24 +6,35 @@ using System.Threading.Tasks;
 
 namespace text_adventure_engine
 {
-    class Thing
+    class Thing : IMovable
     {
-        public string name;
+        public string Name { get; protected set; }
         public decimal weight = 0;
-        public Room location;
+        public Room Location { get; protected set; }
+        public bool IsMovable { get; protected set; }
+        public bool IsTakeable { get; protected set; }
+        public Type IntendedType { get; protected set; }
 
-        protected bool isMoveable = true;
-        public bool IsMoveable
+        public void Move(Room destination)
         {
-            get
+            if (IsMovable)
             {
-                return isMoveable;
+                Location = destination;
             }
+        }
+
+        public void Rename (string newName)
+        {
+            Name = newName;
         }
 
         public Thing (string inputName)
         {
-            name = inputName;
+            Name = inputName;
+            IsMovable = true;
+            IntendedType = typeof(Thing);
         }
     }
+
+
 }

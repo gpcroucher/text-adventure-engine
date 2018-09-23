@@ -6,24 +6,30 @@ using System.Threading.Tasks;
 
 namespace text_adventure_engine
 {
-    class Door
+    class Door : Thing, ILockable
     {
-        private string name;
-        public string Name
+        protected Room[] linkedRooms = new Room[2];
+        public Lock AttachedLock { get; protected set; }
+        public bool IsLocked
         {
             get
             {
-                return name;
+                if ((bool)AttachedLock?.IsLocked)
+                {
+                    return true;
+                }
+                else return false;
             }
         }
-        private Room[] linkedRooms = new Room[2];
-        private Lock doorLock = null;
 
-        public Door (Room firstRoom, Room secondRoom, string direction, Lock inLock = null)
+        public Door (string name, Room firstRoom, Room secondRoom, string direction, Lock inLock = null) : base(name)
         {
             linkedRooms[0] = firstRoom;
             linkedRooms[1] = secondRoom;
-            doorLock = inLock;
+            AttachedLock = inLock;
+
+            IsMovable = false;
+            IsTakeable = false;
 
             firstRoom.exits.Add(direction, this);
             secondRoom.exits.Add(Room.Opposites[direction], this);
@@ -31,12 +37,7 @@ namespace text_adventure_engine
 
         public void ChangeLock (Lock newLock)
         {
-            doorLock = newLock;
-        }
-
-        public void ChangeName (string newName)
-        {
-            name = newName;
+            AttachedLock = newLock;
         }
 
         public void ChangeRooms (Room leftRoom, Room rightRoom)
@@ -44,17 +45,17 @@ namespace text_adventure_engine
             linkedRooms[0] = leftRoom;
             linkedRooms[1] = rightRoom;
         }
-
-        public bool IsLocked()
+        
+        public void Lock()
         {
-            if (doorLock != null && doorLock.IsLocked == true)
-            {
-                return true;
-            }
-            else return false;
+            AttachedLock.ForceLock();
+        }
+        public void Lock(Thing key)
+        {
+            AttachedLock.LockWithKey(key);
         }
 
-        // returns the side that isn't passed in
+        // Returns the side that isn't passed in.
         public Room OtherSide(Room thisSide)
         {
             if (linkedRooms[0] == thisSide)
@@ -62,6 +63,15 @@ namespace text_adventure_engine
                 return linkedRooms[1];
             }
             else return linkedRooms[0];
+        }
+
+        public void Unlock()
+        {
+            AttachedLock.ForceUnlock();
+        }
+        public void Unlock(Thing key)
+        {
+            AttachedLock.UnlockWithKey(key);
         }
     }
 }

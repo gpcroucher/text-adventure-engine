@@ -6,25 +6,48 @@ using System.Threading.Tasks;
 
 namespace text_adventure_engine
 {
-    class Pawn
+    class Pawn : Thing, IHasInventory
     {
         public static Pawn playerPawn;
+        public Inventory Contents { get; } = new Inventory();
 
-        private string name;
-        public string Name
+        public Pawn (string name) : base(name)
         {
-            get
-            {
-                return name;
-            }
+            IntendedType = typeof(Pawn);
         }
-        public Room location;
-        public Inventory personalInventory = new Inventory();
 
-        public Pawn (string Name)
+        // IHasInventory methods
+
+        public void AddToInventory<T>(T item) where T : Thing
         {
-            name = Name;
+            Contents.Insert(item);
         }
+        
+        public bool Contains(string itemName)
+        {
+            return Contents.Contains(itemName);
+        }
+        public bool Contains<T>(T item) where T : Thing
+        {
+            return Contents.Contains(item);
+        }
+
+        public List<string> GetListOfContents()
+        {
+            return Contents.GetListOfContents();
+        }
+
+        public dynamic RemoveFromInventory(string itemName)
+        {
+            return Contents.Remove(itemName);
+        }
+        public T RemoveFromInventory<T>(T item) where T : Thing
+        {
+            return Contents.Remove(item);
+        }
+
+
+        // Commands
 
         /// <summary>
         /// Remove an object from pawn's inventory and add it to the room contents.
@@ -33,8 +56,9 @@ namespace text_adventure_engine
         /// <returns>A reference to the object dropped.</returns>
         public Thing Drop (Thing thing)
         {
-            location.contents.Insert(personalInventory.Remove(thing));
-            thing.location = location;
+            Contents.Remove(thing);
+            Location.contents.Insert(thing);
+            thing.Move(Location);
             return thing;
         }
 
@@ -51,23 +75,23 @@ namespace text_adventure_engine
             {
                 return "That isn't a direction.";
             }
-            if (!location.exits.ContainsKey(direction))
+            if (!Location.exits.ContainsKey(direction))
             {
                 return "You can't go that way.";
             }
-            if (location.exits[direction].IsLocked())
+            if (Location.exits[direction].IsLocked)
             {
                 return "The door is locked.";
             }
-            location = location.exits[direction].OtherSide(location);
+            Location = Location.exits[direction].OtherSide(Location);
             Look();
             return $"You go {direction}.";
         }
 
         public string Look()
         {
-            Console.WriteLine(location.verboseDescription);
-            return location.verboseDescription;
+            Console.WriteLine(Location.verboseDescription);
+            return Location.verboseDescription;
         }
 
         public void Report()
@@ -85,21 +109,22 @@ namespace text_adventure_engine
 
         public void Take(string thingName)
         {
-            personalInventory.Insert(location.contents.Remove(thingName));
+            Contents.Insert(Location.contents.Remove(thingName));
         }
         public void Take(Thing thingReference)
         {
-            personalInventory.Insert(location.contents.Remove(thingReference));
+            Contents.Insert(Location.contents.Remove(thingReference));
         }
         
         public void TakeFrom(string thingName, string containerName)
         {
-            personalInventory.Insert(location.contents.GetContainerReference(containerName).Contents.Remove(thingName));
+            Contents.Insert(Location.contents.GetItemReference(containerName).Contents.Remove(thingName));
         }
-        public void TakeFrom(Thing thingReference, Container containerReference)
+        public void TakeFrom<T>(T thingReference, Container containerReference) where T : Thing
         {
-            personalInventory.Insert(containerReference.Contents.Remove(thingReference));
+            Contents.Insert(containerReference.RemoveFromInventory(thingReference));
         }
-        
+
+
     }
 }

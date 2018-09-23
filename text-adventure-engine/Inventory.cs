@@ -10,67 +10,52 @@ namespace text_adventure_engine
     {
         private Dictionary<string, Thing> invContents = new Dictionary<string, Thing>();
 
-        /// <summary>
-        /// Returns true if the item passed exists in the inventory.
-        /// </summary>
-        /// <param name="thingName">The name of the item to check for.</param>
-        /// <returns>True if the item is present, false otherwise.</returns>
+
         public bool Contains (string thingName)
         {
             return invContents.ContainsKey(thingName);
         }
-        /// <summary>
-        /// Returns true if the item passed exists in the inventory.
-        /// </summary>
-        /// <param name="thingReference">The item to check for, by reference.</param>
-        /// <returns>True if the item is present, false otherwise.</returns>
-        public bool Contains (Thing thingReference)
+        public bool Contains<T>(T thingReference) where T : Thing
         {
             return invContents.ContainsValue(thingReference);
         }
 
-        public Container GetContainerReference (string containerName)
+        public dynamic GetItemReference (string thingName)
         {
-            if (invContents.ContainsKey(containerName) && invContents[containerName].GetType() == typeof(Container))
-            {
-                return (Container)invContents[containerName];
-            }
-            else return null;
-        }
-
-        public Thing GetThingReference (string thingName)
-        {
-            if (invContents.ContainsKey(thingName))
+            if (Contains(thingName))
             {
                 return invContents[thingName];
             }
             else return null;
         }
 
-        public Thing Insert (Thing insertee)
+        public List<string> GetListOfContents()
         {
-            invContents.Add(insertee.name, insertee);
-            return insertee;
-        }
-        public Container Insert (Container insertee)
-        {
-            invContents.Add(insertee.name, insertee);
-            return insertee;
-        }
-        public void Insert (string alternateName, Thing insertee)
-        {
-            invContents.Add(alternateName, insertee);
+            var output = invContents.Keys.ToList();
+            output.Sort();
+            return output;
         }
 
-        public Thing Remove (string thingName)
+        public T Insert<T> (T insertee) where T : Thing
         {
-            Thing removedThing = invContents[thingName];
+            invContents.Add(insertee.Name, insertee);
+            return insertee;
+        }
+        public T Insert<T> (string alternateName, T insertee) where T : Thing
+        {
+            invContents.Add(alternateName, insertee);
+            return insertee;
+        }
+
+        public dynamic Remove (string thingName)
+        {
+            dynamic removedThing = invContents[thingName];
             invContents.Remove(thingName);
             return removedThing;
         }
-        public Thing Remove (Thing thingReference)
+        public T Remove<T> (T thingReference) where T : Thing
         {
-            invContents.Remove(thingReference.name);
+            invContents.Remove(thingReference.Name);
             return thingReference;
         }
     }
