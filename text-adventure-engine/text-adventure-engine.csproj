@@ -51,13 +51,11 @@
     <Compile Include="ILockable.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Lock.cs" />
-    <Compile Include="Mechanism.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
-    <Compile Include="SealedDoor.cs" />
     <Compile Include="Thing.cs" />
   </ItemGroup>
   <ItemGroup>
